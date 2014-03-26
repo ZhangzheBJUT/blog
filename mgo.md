@@ -38,7 +38,7 @@
 		}
 		fmt.Println("Things objects count: ", countNum)
 
-		//*******插入元素*******
+                //*******插入元素*******
 		temp := &Person{
 			ID:    bson.NewObjectId(),
 			PHONE: "18811577546",
