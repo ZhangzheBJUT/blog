@@ -31,7 +31,7 @@
 		collection := db.C("person") //如果该集合已经存在的话，则直接返回
 
 
-        //*****集合中元素数目********
+                //*****集合中元素数目********
 		countNum, err := collection.Count()
 		if err != nil {
 			panic(err)
