@@ -14,7 +14,7 @@
 	type Men struct {
 		Persons []Person
 	}
-	const = (
+	const  (
 		URL = "192.168.2.175:27017"
 	)
 	func main() {
