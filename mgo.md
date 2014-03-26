@@ -66,6 +66,19 @@
 			personAll.Persons = append(personAll.Persons, result)
 		}
 		
+		//*****或者  查询多条数据*****************
+		var PersonALLNew Men
+		iterNew := collection.Find(nil).Iter()
+		err = iterNew.All(&PersonALLNew.Persons)
+		if err != nil {
+			panic(err)
+		}
+		for _, p := range PersonALLNew.Persons {
+			fmt.Println(p)
+			fmt.Println(p.ID)
+		}
+
+		
 		//*******更新数据**********
 		err = collection.Update(bson.M{"name": "ccc"}, bson.M{"$set": bson.M{"name": "ddd"}})
 		err = collection.Update(bson.M{"name": "ddd"}, bson.M{"$set": bson.M{"phone": "12345678"}})
