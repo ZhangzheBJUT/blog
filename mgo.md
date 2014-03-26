@@ -8,6 +8,7 @@
 	)
 
 	type Person struct {
+		ID    bson.ObjectId `_id`
 		NAME  string
 		PHONE string
 	}
@@ -39,15 +40,19 @@
 
 		//*******插入元素*******
 		temp := &Person{
+			ID:    bson.NewObjectId(),
 			PHONE: "18811577546",
-			NAME:  "zhangzheHero"
+			NAME:  "zhangzheHero",
 		}
-            //一次可以插入多个对象 插入两个Person对象
+		
+                //一次可以插入多个对象 插入两个Person对象
 		err = collection.Insert(&Person{"Ale", "+55 53 8116 9639"}, temp)
 		if err != nil {
 			panic(err)
 		}
-
+                fmt.Println(temp.ID.Hex())    //example: 532fcfeff03bde6dc4000001
+		fmt.Println(temp.ID.String()) //example:IdHex("532fcfeff03bde6dc4000001")
+		
 		//*****查询单条数据*******
 		result := Person{}
 		err = collection.Find(bson.M{"phone": "456"}).One(&result)
