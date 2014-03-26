@@ -31,7 +31,7 @@
 		collection := db.C("person") //如果该集合已经存在的话，则直接返回
 
 
-                //*****集合中元素数目********
+            //*****集合中元素数目********
 		countNum, err := collection.Count()
 		if err != nil {
 			panic(err)
@@ -45,7 +45,7 @@
 			NAME:  "zhangzheHero",
 		}
 		
-                //一次可以插入多个对象 插入两个Person对象
+              //一次可以插入多个对象 插入两个Person对象
 		err = collection.Insert(&Person{"Ale", "+55 53 8116 9639"}, temp)
 		if err != nil {
 			panic(err)
