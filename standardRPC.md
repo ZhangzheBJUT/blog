@@ -1,5 +1,12 @@
-一 HTTP RPC
------------	
+**//  
+//  main.go  
+//  golang  
+//
+//  Created by zhangzhe on 2014-2-20
+//**
+
+###一 HTTP RPC
+
 服务端代码
 	
 	package main
@@ -83,8 +90,8 @@
 		}
 	}	
 	
-二 JSON-RPC	
------------
+### 二 JSON-RPC	
+
 	
 服务器端代码
 	

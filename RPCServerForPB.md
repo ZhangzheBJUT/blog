@@ -75,7 +75,10 @@
      	启动服务
 	***********************************/
 	func (this *Server) StartServer() error {
-
+		
+		if len(this.Services) == 0 {
+			return errors.New("No Registed Service.")
+		}
 		lis, err := net.Listen(this.Network, this.Address)
 
 		if err != nil {
@@ -87,7 +90,6 @@
 
 		//注册服务
 		for key, value := range this.Services {
-
 			if err := srv.RegisterName(key, value); err != nil {
 				return err
 			}

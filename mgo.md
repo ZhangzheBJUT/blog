@@ -1,3 +1,10 @@
+**//  
+//  main.go  
+//  golang  
+//
+//  Created by zhangzhe on 2014-3-25  
+//**
+
 	package main
 
 	import (
@@ -31,26 +38,26 @@
 		collection := db.C("person") //如果该集合已经存在的话，则直接返回
 
 
-            //*****集合中元素数目********
+        //*****集合中元素数目********
 		countNum, err := collection.Count()
 		if err != nil {
 			panic(err)
 		}
 		fmt.Println("Things objects count: ", countNum)
 
-                //*******插入元素*******
+        //*******插入元素*******
 		temp := &Person{
 			ID:    bson.NewObjectId(),
 			PHONE: "18811577546",
 			NAME:  "zhangzheHero",
 		}
 		
-              //一次可以插入多个对象 插入两个Person对象
+        //一次可以插入多个对象 插入两个Person对象
 		err = collection.Insert(&Person{"Ale", "+55 53 8116 9639"}, temp)
 		if err != nil {
 			panic(err)
 		}
-                fmt.Println(temp.ID.Hex())    //example: 532fcfeff03bde6dc4000001
+        fmt.Println(temp.ID.Hex())    //example: 532fcfeff03bde6dc4000001
 		fmt.Println(temp.ID.String()) //example:IdHex("532fcfeff03bde6dc4000001")
 		
 		//*****查询单条数据*******
