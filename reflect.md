@@ -213,3 +213,5 @@ f(&x)
 一旦理解了 Go 中的反射的这些规则，就会变得容易使用了，虽然它仍然很微妙。这是一个强大的工具，除非真得有必要，否则应当避免使用或小心使用。
 
 还有大量的关于反射的内容没有涉及到——channel 上的发送和接收、分配内存、使用 slice 和 map、调用方法和函数。
+
+参考:[http://blog.golang.org/laws-of-reflection](http://blog.golang.org/laws-of-reflection "http://blog.golang.org/laws-of-reflection")
