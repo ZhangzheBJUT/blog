@@ -1,4 +1,4 @@
-### 一 channel介绍
+   ### 一 channel介绍
 channel是Go语言在语言级别提供的goroutine间的通信方式。我们可以使用channel在两个或多个goroutine直间传递消息哦。channel是进程内的通信方式，因此通过channel传递对象的过程和用函数时的参数传递行为比较一致，比如也可以传递指针等。如果需要跨进程通信，我们建议用分布式的方法来解决，比如使用socket或者http等通信协议。
 channel是类型相关的，也就是说，一个channel只能传递一种类型的值，这个类型需要在声明channel指定。如果对Unix管道有所了解的话，不难理解channel，可以将其认为是一种类型的管道。
 
