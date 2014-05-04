@@ -1,11 +1,10 @@
 ###一 反射的规则
-运行时反射是程序检查其所拥有的结构，尤其是类型的一种能力；这是元编程的一种形式。它同时也是造成混淆的重要来源。
+反射是程序运行时检查其所拥有的结构，尤其是类型的一种能力；这是元编程的一种形式。它同时也是造成混淆的重要来源。
 
-在这篇文章中将试图明确解释在 Go 中的反射是如何工作的。每个语言的反射模型都不同（同时许多语言根本不支持反射）。不过这篇文章是关于 Go 的，因此接下来的内容“反射”这一词表示“在 Go 中的反射”。
-
+每个语言的反射模型都不同（同时许多语言根本不支持反射）。本节将试图明确解释在 Go 中的反射是如何工作的。
 
 ###1. 从接口值到反射对象的反射    
-**在基本的层面上，反射只是一个检查存储在接口变量中的类型和值的算法。**在 reflect 包中有两个类型需要了解：**Type** 和 **Value**。这两个类型使得可以访问接口变量的内容，还有两个简单的函数，**reflect.TypeOf** 和 **reflect.ValueOf，从接口值中分别获取 reflect.Type 和 reflect.Value。**（同样，从 reflect.Value 也很容易能够获得 reflect.Type，不过这里让 Value 和 Type 在概念上分离了。）
+**在基本的层面上，反射只是一个检查存储在接口变量中的类型和值的算法。**在 reflect 包中有两个类型需要了解：**Type** 和 **Value**。这两个类型使得可以访问接口变量的内容，还有两个简单的函数，**reflect.TypeOf** 和 **reflect.ValueOf，从接口值中分别获取 reflect.Type 和 reflect.Value。**（**注：从 reflect.Value 也很容易能够获得 reflect.Type，不过这里让 Value 和 Type 在概念上是分离的**）
 
 从 TypeOf 开始：
 
@@ -34,7 +33,7 @@ reflect.ValueOf 函数，当然就是还原那个值（从这里开始将会略�
 打印
 
 	value: <float64 Value>
-reflect.Type 和 reflect.Value都有许多方法用于检查和操作它们。一个重要的例子是 Value 有一个 Type 方法返回 reflect.Value 的 Type。另一个是 Type 和 Value 都有 Kind 方法返回一个常量来表示类型：Uint、Float64、Slice 等等。同样 Value 有叫做 Int 和 Float 的方法可以获取存储在内部的值（跟 int64 和 float64 一样）：
+除了reflect.Type 和 reflect.Value外，都有许多方法用于检查和操作它们。一个重要的例子是 Value 有一个 Type 方法返回 reflect.Value 的 Type。另一个是 Type 和 Value 都有 Kind 方法返回一个常量来表示类型：Uint、Float64、Slice 等等。同样 Value 有叫做 Int 和 Float 的方法可以获取存储在内部的值（跟 int64 和 float64 一样）：
 
 	var x float64 = 3.4
 	v := reflect.ValueOf(x)
@@ -70,7 +69,7 @@ reflect.Type 和 reflect.Value都有许多方法用于检查和操作它们。�
 v 的 Kind 仍然是 reflect.Int，尽管 x 的静态类型是 MyInt，而不是 int。换句话说，Kind 无法从 MyInt 中区分 int，而 Type 可以。
 
 
-###2. 从反射对象到接口值的反射。
+###2. 从反射对象到接口值的反射
 
 如同物理中的反射，在 Go 中的反射也存在它自己的镜像。
 
@@ -87,11 +86,11 @@ v 的 Kind 仍然是 reflect.Int，尽管 x 的静态类型是 MyInt，而不是
 
 通过反射对象 v 可以打印 float64 的表达值。
 
-然而，还可以做得更好。`fmt.Println`，`fmt.Printf` 和其他所有传递一个空接口值作为参的的函数，在 fmt 包内部解包的方式就像之前的例子这样。因此正确的打印 reflect.Value 的内容的方法就是将 Interface 方法的结果进行格式化打印(formatted print routine).
+然而，还可以做得更好。`fmt.Println`,`fmt.Printf` 等其他所有传递一个空接口值作为参数的函数，在 fmt 包内部解包的方式就像之前的例子这样。因此正确的打印 reflect.Value 的内容的方法就是将 Interface 方法的结果进行格式化打印(formatted print routine).
 
 	fmt.Println(v.Interface())
 
-为什么不是 fmt.Println(v)？因为 v 是一个 reflect.Value；这里希望是它保存的实际的值。
+为什么不是 fmt.Println(v)？因为 v 是一个 reflect.Value；这里希望获得的是它保存的实际的值。
    
 由于值是 float64，如果需要的话，甚至可以使用浮点格式化：
 
@@ -102,7 +101,7 @@ v 的 Kind 仍然是 reflect.Int，尽管 x 的静态类型是 MyInt，而不是
 简单来说，Interface 方法是 ValueOf 函数的镜像，除了返回值总是静态类型 interface{}。  
 回顾：**反射可以从接口值到反射对象，也可以反过来。**
 
-###3. 为了修改反射对象，其值必须可设置。
+###3. 为了修改反射对象，其值必须可设置
 
 	var x float64 = 3.4
 	v := reflect.ValueOf(x)
@@ -152,7 +151,7 @@ f(&x)
 
 	type of p: *float64
 	settability of p: false
-反射对象 p 并不是可设置的，但是并不希望设置 p，（实际上）是 *p。为了获得 p 指向的内容，调用值上的 Elem 方法，从指针间接指向，然后保存反射值的结果叫做 v：
+反射对象 p 并不是可设置的，而且我们也不希望设置 p，实际上是 *p。为了获得 p 指向的内容，调用值上的 Elem 方法，从指针间接指向，然后保存反射值的结果叫做 v：
 
 	v := p.Elem()
 	fmt.Println("settability of v:" , v.CanSet())
@@ -214,4 +213,8 @@ f(&x)
 
 还有大量的关于反射的内容没有涉及到——channel 上的发送和接收、分配内存、使用 slice 和 map、调用方法和函数。
 
-参考:[http://blog.golang.org/laws-of-reflection](http://blog.golang.org/laws-of-reflection "http://blog.golang.org/laws-of-reflection")
+事例代码：
+[https://github.com/ZhangzheBJUT/GoProject/blob/master/reflect/main.go](https://github.com/ZhangzheBJUT/GoProject/blob/master/reflect/main.go "https://github.com/ZhangzheBJUT/GoProject/blob/master/reflect/main.go")
+
+参考:  
+[http://blog.golang.org/laws-of-reflection](http://blog.golang.org/laws-of-reflection "http://blog.golang.org/laws-of-reflection")
