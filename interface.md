@@ -127,7 +127,7 @@ go语言可以根据下面的函数:
 这样，类型*Integer就既存在Less()方法，也存在Add()方法，满足LessAdder接口。
 而根据      
 
-	func (a *Integer) Add(b Integer)】
+	func (a *Integer) Add(b Integer)
 
 这个函数无法生成以下成员方法：
 
